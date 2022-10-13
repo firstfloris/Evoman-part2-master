@@ -1,0 +1,12 @@
+dask==2021.4.0
+dill==0.3.5.1
+matplotlib==3.3.4
+numpy==1.20.1
+pandas==1.2.4
+PyAutoGUI==0.9.53
+pygame==2.1.2
+pyrsistent==0.17.3
+regex==2021.4.4
+scikit_learn==1.1.2
+sympy==1.8
+tqdm==4.59.0
