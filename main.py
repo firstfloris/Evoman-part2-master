@@ -210,7 +210,7 @@ if __name__ == '__main__':
     start = dt.datetime.now()
 
     # create folder for results
-    experiment_name = f'pymoo_algo_gen{generations}_pop{pop}_minstd{min_std}_crossover{inc_crossover_operator}_enemies{enemies}'
+    experiment_name = f'pymoo_algo_gen{generations}_pop{pop}_minstd{min_std}_crossover{inc_crossover_operator}_enemies{enemies[0]}{enemies[1]}'
     results_or_test = hf.define_parent_folder(test)
     if checkpoint_name == None or "None":
         results_file = hf.create_folder(f"{results_or_test}/{experiment_name}", add_date=True)
