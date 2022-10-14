@@ -140,6 +140,7 @@ if __name__ == '__main__':
     
     if len(sys.argv) == 1:
         # Ask for user input
+        pop = int(input("Population size: "))
         competition_bool = input("Do you want to start a competition run? (y/n): ")
         if competition_bool == "y":
             print("Starting competition run")
@@ -190,7 +191,7 @@ if __name__ == '__main__':
     test = True
     debug = False
     generations = ""
-    pop = 50
+    # pop = 50
     verbose_level = 5
     headless = True
 
