@@ -180,11 +180,13 @@ if __name__ == '__main__':
         competition = eval(sys.argv[3])
         enemies = eval(sys.argv[4])
         inc_crossover_operator = eval(sys.argv[5])
+        
 
     
     ######################################## PARAMETERS
     
     # set parameters
+
     test = True
     debug = False
     generations = ""
@@ -209,7 +211,7 @@ if __name__ == '__main__':
     # create folder for results
     experiment_name = f'pymoo_algo_gen{generations}_pop{pop}'
     results_or_test = hf.define_parent_folder(test)
-    if checkpoint_name == None:
+    if checkpoint_name == None or "None":
         results_file = hf.create_folder(f"{results_or_test}/{experiment_name}", add_date=True)
     else:
         results_file = f"{results_or_test}/{experiment_name}/{checkpoint_name}"
@@ -226,7 +228,8 @@ if __name__ == '__main__':
         os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 
-    if competition == False:
+    if competition == False or "False":
+        N_runs = 10
         result = {}
         # result[run][enemy][variable]
         for i in tqdm(range(1,N_runs+1), desc="Runs"):
