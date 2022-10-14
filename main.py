@@ -188,7 +188,7 @@ if __name__ == '__main__':
     test = True
     debug = False
     generations = ""
-    pop = 15
+    pop = 50
     verbose_level = 5
     headless = True
 
