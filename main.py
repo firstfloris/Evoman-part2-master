@@ -1,6 +1,7 @@
 from operator import index
 from random import random, seed
 import sys
+sys.path.insert(0, 'evoman')
 import os
 from tabnanny import check, verbose
 from sympy import comp
@@ -150,7 +151,7 @@ if __name__ == '__main__':
                 checkpoint_name = None
                 max_gen = 100000
                 
-            competition = False
+            competition = True
             N_runs = 1
         elif competition_bool == "n":
             print("Starting report (10 runs)")
@@ -162,7 +163,7 @@ if __name__ == '__main__':
                 checkpoint_name = None
                 max_gen = int(input("Max generations: "))
 
-            competition = True
+            competition = False
             N_runs = 10
             
         enemies = eval(input("Enemies (e.g. [1,2]): "))
@@ -225,7 +226,7 @@ if __name__ == '__main__':
         os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 
-    if competition:
+    if competition == False:
         result = {}
         # result[run][enemy][variable]
         for i in tqdm(range(1,N_runs+1), desc="Runs"):
