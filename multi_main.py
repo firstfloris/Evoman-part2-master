@@ -150,7 +150,7 @@ if __name__ == '__main__':
     
     # set parameters
     max_gen = 10000
-    pop = 50
+    pop = 15
     inc_crossover_operator = True
     enemies = [[1,2,3,4],[5,6,7,8]]
     checkpoint_name = None
