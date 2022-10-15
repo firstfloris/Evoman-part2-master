@@ -9,6 +9,11 @@ from sklearn.metrics import mean_gamma_deviance
 import hulpfunctions as hf
 
 def plot_fitness(experiment_name, generations, fitness_mean, fitness_min, enemy_type, title, path='', cp=False):
+    print(f"Plotting fitness for {experiment_name}...")
+    print(f"Generations: {generations}")
+    print(f"Fitness mean: {fitness_mean}")
+    print(f"Fitness min: {fitness_min}")
+    print(f"Enemy type: {enemy_type}")
     
     if cp == False:
         mean_gens = np.mean(fitness_mean, axis=0)

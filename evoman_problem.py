@@ -61,13 +61,18 @@ class Evoman(Problem):
 
     def simulation_single(self, env,x,i):
         genome, _ = split_individual(x, self.genome_length)
-        env.play(pcont=genome)
-        f = self.fitness_function(env)
-        p = env.get_playerlife()
-        e = env.get_enemylife()
-        t = env.get_time()
-        self.pr.nt(text=f"(Enemy {i+1}) fitness: {f}, player: {p}, enemy: {e}, time: {t}", verbose_level_of_text=5)
-        return f, p, e, t
+        vfitness, vplayerlife, venemylife, vtime = env.play(pcont=genome)
+        # f = self.fitness_function(env)
+        # p = env.get_playerlife()
+        # e = env.get_enemylife()
+        # t = env.get_time()
+        
+
+        f = -vfitness
+        print(f"(Enemy {i+1}) fitness: {f}, player: {vplayerlife}, enemy: {venemylife}, time: {vtime}")
+
+        return f, vplayerlife, venemylife, vtime
+        # return f, p, e, t
 
     def eval(self, x, envs):
         res = []

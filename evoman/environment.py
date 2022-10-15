@@ -390,6 +390,7 @@ class Environment(object):
 
     # default fitness function for consolidating solutions among multiple games
     def cons_multi(self,values):
+        return numpy.mean(values) - numpy.std(values)
         return values.mean() - values.std()
 
     # measures the energy of the player
