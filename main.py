@@ -56,7 +56,7 @@ class MyCallback(Callback):
         f_min = self.problem.fitness_gen_min
         print("f_min", f_min)
         for e in range(len(enemies)):
-            plot.plot_fitness(experiment_name, len(f_mean[e]), f_mean[e], f_min[e], e+1, f"Enemy {e+1}", path=results_file, cp=True)
+            plot.plot_fitness(experiment_name, len(f_mean[e]), f_mean[e], f_min[e], enemies[e], f"Enemy {enemies[e]}", path=results_file, cp=True)
 
         Scatter(title="Pymoo NSGA2", axis_style={"xlim": [0, 1], "ylim": [0, 1]}).add(res).save(f"{self.pymoo_plot}/scatter_{self.run}.pdf")
 
@@ -95,7 +95,7 @@ def pymoo(print_ver, run):
 
     if checkpoint_name == None:
         try:
-            res = minimize(problem, algorithm, ('n_gen', 100000), verbose=True, callback=MyCallback(problem, pymoo_plot, run)) 
+            res = minimize(problem, algorithm, ('n_gen', max_gen), verbose=True, callback=MyCallback(problem, pymoo_plot, run)) 
         except:
             print("Error in minimize, saving checkpoint")
             with open(f"{results_file}/checkpoint", "wb") as f:
@@ -127,7 +127,7 @@ def pymoo(print_ver, run):
         os.remove(f"{pymoo_plot}/scatter_{run}.pdf")
 
     print("Plotting final results")
-    Scatter(title="Pymoo NSGA2", axis_style={"xlim": [0, 1], "ylim": [0, 1]}).add(res["F"]).save(f"{pymoo_plot}/scatter_{run}.pdf")
+    Scatter(title="Pymoo NSGA2", axis_style={"xlim": [0, 1], "ylim": [0, 1]}).add(res.F).save(f"{pymoo_plot}/scatter_{run}.pdf")
 
     pr.nt(f'Threads: {round(res.exec_time, 2)}', verbose_level_of_text=0)
     # pr.nt(f"Fitness mean per generation: {round(problem.fitness_gen_mean, 3)}", verbose_level_of_text=1)
@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
     test = True
     debug = False
-    generations = ""
+    
     # pop = 50
     verbose_level = 5
     headless = True
@@ -209,8 +209,8 @@ if __name__ == '__main__':
     #start timer to time script
     start = dt.datetime.now()
 
-    # create folder for results
-    experiment_name = f'pymoo_algo_gen{generations}_pop{pop}_minstd{min_std}_crossover{inc_crossover_operator}_enemies{enemies[0]}{enemies[1]}'
+    # crEate folder for results
+    experiment_name = f'pymoo_algo_gen{max_gen}_pop{pop}_minstd{min_std}_crossover{inc_crossover_operator}_enemies{enemies[0]}{enemies[1]}'
     results_or_test = hf.define_parent_folder(test)
     if checkpoint_name == None or "None":
         results_file = hf.create_folder(f"{results_or_test}/{experiment_name}", add_date=True)
@@ -264,23 +264,23 @@ if __name__ == '__main__':
             for i in range(1,N_runs+1):
                 f_mean.append(result[i][e]['f_gen_mean'])
                 f_min.append(result[i][e]['f_gen_min'])
-                pr.nt(f"Run {i} enemy {e} f_mean: {result[i][e]['f_mean']}", verbose_level_of_text=2)
-                pr.nt(f"Run {i} enemy {e} f_min: {result[i][e]['f_min']}", verbose_level_of_text=2)
+                pr.nt(f"Run {i} enemy {enemies[e]} f_mean: {result[i][e]['f_mean']}", verbose_level_of_text=2)
+                pr.nt(f"Run {i} enemy {enemies[e]} f_min: {result[i][e]['f_min']}", verbose_level_of_text=2)
 
-            pr.nt(f"Mean fitness for enemy {e}: {f_mean}", verbose_level_of_text=3)
-            pr.nt(f"min fitness for enemy {e}: {f_min}", verbose_level_of_text=3)
-            plot.plot_fitness(experiment_name, len(f_mean), f_mean, f_min, e+1, f"Enemy {e+1}", path=results_file)
+            pr.nt(f"Mean fitness for enemy {enemies[e]}: {f_mean}", verbose_level_of_text=3)
+            pr.nt(f"min fitness for enemy {enemies[e]}: {f_min}", verbose_level_of_text=3)
+            plot.plot_fitness(experiment_name, len(f_mean), f_mean, f_min, enemies[e], f"Enemy {enemies[e]}", path=results_file)
 
         # Convert results to pd.DataFrame
         df = pd.DataFrame()
         for i in range(1,N_runs+1):
             for e in range(1,1+len(enemies)):
-                df = df.append({'run': i, 'enemy': e, 'f_mean': result[i][e-1]['f_mean'], 'f_min': result[i][e-1]['f_min'], 'best_genome': result[i]['best_genome'], 'f_gen_mean': result[i][e-1]['f_gen_mean'], 'f_gen_min': result[i][e-1]['f_gen_min']}, ignore_index=True)
+                df = df.append({'run': i, 'enemy': enemies[e-1], 'f_mean': result[i][e-1]['f_mean'], 'f_min': result[i][e-1]['f_min'], 'best_genome': result[i]['best_genome'], 'f_gen_mean': result[i][e-1]['f_gen_mean'], 'f_gen_min': result[i][e-1]['f_gen_min']}, ignore_index=True)
 
         # convert df to excel where each enemy is a sheet, and each run is a row in the sheet
         writer = pd.ExcelWriter(f'{results_file}/results_{N_runs}_runs.xlsx', engine='xlsxwriter')
         for e in range(1,1+len(enemies)):
-            df[df['enemy'] == e].to_excel(writer, sheet_name=f'enemy_{e}')
+            df[df['enemy'] == e].to_excel(writer, sheet_name=f'enemy_{enemies[e-1]}')
         writer.save()
     
     else:
